@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">-->
+    <link href="Contents/bootstrap.min.css" rel="stylesheet" />
+    <link href="Contents/viewer.min.css" rel="stylesheet" />
+    <link href="Contents/bootstrap.custom.css" rel="stylesheet" />
+
+    <title>Painel CCO</title>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Painel CCO</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="Index.html">
+                            Online
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <!--<li class="nav-item">
+                        <a class="nav-link" href="Historico.html">Histórico</a>
+                    </li>-->
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-12 text-center">
+                <!--<div></div>
+                <div></div>
+
+                <ul id="products" />
+
+                <div>
+                    <h2>Search by ID</h2>
+                    <input type="text" id="prodId" size="5" />
+                    <input type="button" value="Search" onclick="find();" />
+                    <p id="product" />
+                </div>
+                <div>
+                    <a href="api/Screenshot/Download?format=zip">Download</a>
+                </div>-->
+
+                <br/>
+                <!-- <br/> -->
+                <img id="screenshot" src="" class="img-fluid" alt="Último screenshot do painel de trens do CCO.">
+            </div>
+        </div>
+    </div>
+
+    <!--<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>-->
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <!--<script src="https://code.jquery.com/jquery-3.4.1.min.js"integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="      crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>-->
+
+    <script src="Contents/jquery-3.4.1.min.js"></script>
+    <script src="Contents/popper.min.js"></script>
+    <script src="Contents/bootstrap.min.js"></script>
+
+    <script src="Scripts/viewer.min.js"></script>
+    <script src="Scripts/jquery-viewer.min.js"></script>
+    <script src="Scripts/wheelzoom.js"></script>
+
+
+      <!-- Importações de scripts e declaração do script personalizado -->
+      <script src="Contents/jquery-3.4.1.min.js"></script>
+      <script>
+          $(document).ready(function() {
+              // Faz a requisição à API do Portal Gasag
+              $.ajax({
+                  url: 'http://192.168.13.124/api/redirection/checkandredirect',
+                  type: 'POST',
+                  contentType: 'application/json',
+                  success: function(response) {
+                      console.log('Resposta da API:', response);
+                      if (!response) {
+                          window.location.href = 'http://172.20.15.22/gasag/login';//COLOCAAR CAMINHO CORRETO
+                      } else {
+                          console.log('Usuário não autenticado.');
+                      }
+                  },
+                  error: function(xhr, status, error) {
+                      console.error('Erro na requisição à API:', error);
+                  }
+              });
+          });
+      </script>
+
+
+     <!--<script>
+        //verifica se o cookie está definido como true
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
+        const authenticated = getCookie('cookieAuthLogin');
+        if (authenticated === 'true') {
+            window.location.replace('http://172.20.15.22/painelCCo');
+        } else {
+            console.log('Usuário não autenticado.');
+            window.location.replace('http://172.20.15.19/portalgasag');
+
+        }
+    </script>-->
+
+    <script>
+        var uri = 'api/screenshot';
+        var uri2 = "api/screenshot?start=2019-05-16T14:20:00&end=2019-05-20T14:30:00"
+        var uridownload = "api/screenshot/download?format=zip"
+
+        $(document).ready(function () {             
+            var $image = $('#screenshot');
+            $image.viewer({
+                inline: false,
+                navbar: false,
+                toolbar: {
+                    zoomIn: 4,
+                    zoomOut: 4,
+                    oneToOne: 0,
+                    reset: 4,
+                    prev: 0,
+                    play: {
+                        show: 0,
+                        size: 'large',
+                    },
+                    next: 0,
+                    rotateLeft: 0,
+                    rotateRight: 0,
+                    flipHorizontal: 0,
+                    flipVertical: 0,
+                },
+
+                viewed: function () {
+                    $image.viewer('zoomTo', 0.4);
+                }
+            });           
+
+            //// Send an AJAX request
+            // $.getJSON(uri)
+            //    .done(function (data) {
+            //        $('#product').text(formatItem(data));
+            //    });
+        });
+
+        function formatItem(item) {
+            //return item.Name + ': $' + item.Price;
+            return item.Name;
+        }
+
+        function find() {            
+            $.getJSON(uri)
+                .done(function (data) {
+                    $('#screenshot').attr('src', './prints/' + data.Name);
+                    $('#screenshot').data('viewer').update();
+                });
+        }
+
+        find();
+
+        window.setInterval(find, 60000);
+    </script>
+
+    <!-- Redirecionamento para a página de login 
+    <script>
+        // Redirecionar automaticamente para a página de login
+        window.onload = function() {
+            window.location.replace('http://172.20.15.19/portalgasag');
+        };
+    </script> -->
+</body>
+</html>
