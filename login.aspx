@@ -42,32 +42,6 @@
 
 
     
-    <script>
-        function handleLogin() {
-            const matricula = document.getElementById('TxtMatricula').value;
-            const senha = document.getElementById('TxtSenha').value;
-    
-            const loginData = {
-                Matricula: matricula,
-                Senha: senha,
-            };
-    
-            fetch('http://192.168.13.124/gasag/api/redirection/checkandredirect', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(loginData),
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-            })
-            .catch(error => {
-                console.error('Erro:', error);
-            });
-        }
-    </script>
     
    
 </asp:Content>

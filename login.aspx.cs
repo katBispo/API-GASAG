@@ -217,7 +217,7 @@ public partial class Login : System.Web.UI.Page
             lblInfor.Text = "O usuario não existe no sistema.";
             lblInfor.Visible = true;
         }
-    }
+    }//fim btn
 
 
     protected bool CountLogon(int matricula)
