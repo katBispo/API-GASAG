@@ -20,42 +20,50 @@
 </head>
 <body>
 
-<script>
-    // Função para validar o token JWT
-    function validateJwtToken(token) {
-        try {
-            // Verificar o token usando a chave secreta
-            var decodedToken = jwtDecode(token);
-
-            return true; // Token válido
-        } catch (error) {
-            return false;
+    <script>
+        function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, '\\$&');
+            var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
         }
-    }
 
-    // Função para verificar o token JWT na URL
-    function checkTokenInUrl() {
-        var urlParams = new URLSearchParams(window.location.search);
-        var token = urlParams.get('token');
+        function decodeJwt(token) {
+            try {
+                const payload = JSON.parse(atob(token.replace(/-/g, '+').replace(/_/g, '/')));
+                return payload;
+            } catch (error) {
+                console.error('Erro ao decodificar o token JWT:', error);
+                return null;
+            }
+        }
 
-        if (token !== null && token !== undefined && token !== '') {
-            // Validar o token JWT
-            var isValidToken = validateJwtToken(token);
+        // Extrair o token da URL
+        const tokenParam = getParameterByName('token');
 
-            if (isValidToken) {
-                window.location.href = 'http://172.20.15.22/Painelcco/';
+        if (tokenParam !== null) {
+            const decodedToken = decodeJwt(tokenParam);
+
+            if (decodedToken !== null && typeof decodedToken.isAuthenticated !== 'undefined') {
+                const isAuthenticated = decodedToken.isAuthenticated;
+                console.log('Usuário autenticado:', isAuthenticated);
+
+                // Redirecionar
+                if (isAuthenticated) {
+                    window.location.href = 'https://172.20.15.22/painelCCO/';
+                } else {
+                    window.location.href = 'http://172.20.15.19/gasag';
+                }
             } else {
-                window.location.href = 'http://172.20.15.19/gasag';
+                console.error('Token JWT inválido ou não contém informações de autenticação.');
             }
         } else {
-            window.location.href = 'http://172.20.15.19/gasag';
+            console.error('Token JWT ausente na URL.');
         }
-    }
-
-    // Chamar a função de verificação quando a página carregar
-    window.onload = checkTokenInUrl;
-</script>
-
+    </script>
 
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">

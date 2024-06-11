@@ -1,3 +1,7 @@
+// Referência manual à DLL local PASSAR CAMINHO EXAT "libsKat"
+#r "libs/System.IdentityModel.Tokens.Jwt.dll"
+
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
